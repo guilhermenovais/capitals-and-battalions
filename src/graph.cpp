@@ -198,6 +198,27 @@ std::vector<std::string> Graph::findSecondaryBattalions() {
 
 std::vector<std::vector<std::string>> Graph::definePatrols() {
   std::vector<std::vector<std::string>> patrols;
+
+  for (const auto &battalionSccPair : battalionsToScss) {
+    const std::string &battalion = battalionSccPair.first;
+    const std::vector<std::string> &scc = battalionSccPair.second;
+
+    if (scc.size() <= 1)
+      continue;
+
+    std::vector<std::pair<std::string, std::string>> patrolRoute =
+        findPatrolInSCC(scc, battalion);
+
+    std::vector<std::string> patrol;
+    patrol.push_back(battalion);
+
+    for (const auto &edge : patrolRoute) {
+      patrol.push_back(edge.second);
+    }
+
+    patrols.push_back(patrol);
+  }
+
   return patrols;
 }
 
@@ -210,24 +231,27 @@ Graph::findPatrolInSCC(const std::vector<std::string> &scc,
     localAdjList[vertex] = adjList[vertex];
   }
 
-  std::stack<std::string> stack;
   std::vector<std::pair<std::string, std::string>> patrolRoute;
+  std::stack<std::string> dfsStack;
 
-  stack.push(startVertex);
+  dfsStack.push(startVertex);
 
-  while (!stack.empty()) {
-    std::string u = stack.top();
+  while (!dfsStack.empty()) {
+    std::string currentVertex = dfsStack.top();
 
-    if (!localAdjList[u].empty()) {
-      std::string v = localAdjList[u].back();
-      localAdjList[u].pop_back();
-      stack.push(v);
-      patrolRoute.push_back({u, v});
+    if (!localAdjList[currentVertex].empty()) {
+      std::string nextVertex = localAdjList[currentVertex].back();
+      localAdjList[currentVertex].pop_back();
+      patrolRoute.push_back({currentVertex, nextVertex});
+      dfsStack.push(nextVertex);
     } else {
-      stack.pop();
+      dfsStack.pop();
     }
   }
 
-  patrolRoute.push_back({patrolRoute.back().second, startVertex});
+  if (!patrolRoute.empty() && patrolRoute.back().second == startVertex) {
+    patrolRoute.pop_back();
+  }
+
   return patrolRoute;
 }

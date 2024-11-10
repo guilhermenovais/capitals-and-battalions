@@ -14,7 +14,7 @@ private:
   Graph &graph;
   std::string capital;
   std::vector<std::vector<std::string>> sccs;
-
+  std::vector<std::string> secondaryBattalions;
   void defineCapital();
   void defineSecondaryBattalions();
 };

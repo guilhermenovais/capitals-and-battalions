@@ -134,3 +134,62 @@ Graph::calculateShortestPaths(const std::string &start) {
 
   return distance;
 }
+
+int Graph::calculateSCCInternalDistances(const std::vector<std::string> &scc,
+                                         const std::string &vertex) {
+  std::unordered_map<std::string, int> distances =
+      calculateShortestPaths(vertex);
+  int sum = 0;
+
+  for (const std::string &other : scc) {
+    sum += distances[other];
+  }
+
+  return sum;
+}
+
+std::vector<std::string> Graph::findSecondaryBattalions() {
+  std::vector<std::string> secondaryBattalions;
+  std::string capital = findCapital();
+  std::unordered_map<std::string, int> distancesToCapital =
+      calculateShortestPaths(capital);
+
+  auto sccs = findSCCs();
+
+  for (const auto &scc : sccs) {
+    bool containsCapital = false;
+    for (const auto &v : scc) {
+      if (v == capital) {
+        containsCapital = true;
+        break;
+      }
+    }
+    if (containsCapital) {
+      continue;
+    }
+
+    std::string bestBattalion;
+    int minDistanceToCapital = INT_MAX;
+    int minInternalDistanceSum = INT_MAX;
+
+    for (const auto &vertex : scc) {
+      int distanceToCapital = distancesToCapital[vertex];
+
+      if (distanceToCapital < minDistanceToCapital) {
+        minDistanceToCapital = distanceToCapital;
+        bestBattalion = vertex;
+        minInternalDistanceSum = calculateSCCInternalDistances(scc, vertex);
+      } else if (distanceToCapital == minDistanceToCapital) {
+        int internalSum = calculateSCCInternalDistances(scc, vertex);
+        if (internalSum < minInternalDistanceSum) {
+          bestBattalion = vertex;
+          minInternalDistanceSum = internalSum;
+        }
+      }
+    }
+
+    secondaryBattalions.push_back(bestBattalion);
+  }
+
+  return secondaryBattalions;
+}

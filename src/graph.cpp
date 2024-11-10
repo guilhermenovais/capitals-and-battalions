@@ -1,6 +1,7 @@
 #include "../include/graph.hpp"
 #include <limits>
 #include <queue>
+#include <stack>
 
 Graph::Graph() : INT_MAX(std::numeric_limits<int>::max()) {}
 
@@ -161,6 +162,7 @@ std::vector<std::string> Graph::findSecondaryBattalions() {
     for (const auto &v : scc) {
       if (v == capital) {
         containsCapital = true;
+        battalionsToScss[capital] = scc;
         break;
       }
     }
@@ -187,9 +189,45 @@ std::vector<std::string> Graph::findSecondaryBattalions() {
         }
       }
     }
-
+    battalionsToScss[bestBattalion] = scc;
     secondaryBattalions.push_back(bestBattalion);
   }
 
   return secondaryBattalions;
+}
+
+std::vector<std::vector<std::string>> Graph::definePatrols() {
+  std::vector<std::vector<std::string>> patrols;
+  return patrols;
+}
+
+std::vector<std::pair<std::string, std::string>>
+Graph::findPatrolInSCC(const std::vector<std::string> &scc,
+                       const std::string &startVertex) {
+  std::unordered_map<std::string, std::vector<std::string>> localAdjList;
+
+  for (const std::string &vertex : scc) {
+    localAdjList[vertex] = adjList[vertex];
+  }
+
+  std::stack<std::string> stack;
+  std::vector<std::pair<std::string, std::string>> patrolRoute;
+
+  stack.push(startVertex);
+
+  while (!stack.empty()) {
+    std::string u = stack.top();
+
+    if (!localAdjList[u].empty()) {
+      std::string v = localAdjList[u].back();
+      localAdjList[u].pop_back();
+      stack.push(v);
+      patrolRoute.push_back({u, v});
+    } else {
+      stack.pop();
+    }
+  }
+
+  patrolRoute.push_back({patrolRoute.back().second, startVertex});
+  return patrolRoute;
 }

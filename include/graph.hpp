@@ -13,6 +13,7 @@ public:
   std::string findCapital();
   std::vector<std::vector<std::string>> findSCCs();
   std::vector<std::string> findSecondaryBattalions();
+  std::vector<std::vector<std::string>> definePatrols();
 
 private:
   const int INT_MAX;
@@ -27,6 +28,11 @@ private:
                                     const std::string &vertex);
   std::unordered_map<std::string, int>
   calculateShortestPaths(const std::string &start);
+  std::vector<std::pair<std::string, std::string>>
+  findPatrolInSCC(const std::vector<std::string> &scc,
+                  const std::string &startVertex);
+  std::string capital;
+  std::unordered_map<std::string, std::vector<std::string>> battalionsToScss;
 };
 
 #endif // GRAPH_HPP

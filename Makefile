@@ -14,21 +14,19 @@ CC = g++
 SRC = src
 OBJ = obj
 INC = include
-BIN = bin
 
 CFLAGS = -c -g -I$(INC) -Wall -Wextra -Wpedantic -Wformat-security -Wconversion -Werror
 
-EXE = $(BIN)/program.out
+EXE = tp1.out
 
 OBJS = $(OBJ)/main.o $(OBJ)/graph.o $(OBJ)/solution.o
 
 HDRS = $(INC)/graph.hpp $(INC)/solution.hpp
 
+all: mkdir $(EXE)
+
 mkdir:
 	[ -d obj ] || mkdir obj
-	[ -d bin ] || mkdir bin
-
-all: mkdir $(EXE)
 
 $(EXE): $(OBJS)
 	$(CC) -o $(EXE) $(OBJS)
@@ -47,7 +45,7 @@ clean:
 	rm -f $(EXE) $(OBJS)
 
 run: all
-	./$(EXE)
+	./$(EXE) < testcases/inputs/example1.txt
 
 test: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(EXE) < testcases/inputs/testCase01.txt

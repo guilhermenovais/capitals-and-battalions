@@ -15,8 +15,10 @@ private:
   std::string capital;
   std::vector<std::vector<std::string>> sccs;
   std::vector<std::string> secondaryBattalions;
+  std::vector<std::vector<std::string>> patrols;
   void defineCapital();
   void defineSecondaryBattalions();
+  void definePatrols();
 };
 
 #endif // SOLUTION_HPP

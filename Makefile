@@ -17,7 +17,7 @@ INC = include
 
 CFLAGS = -c -g -I$(INC) -Wall -Wextra -Wpedantic -Wformat-security -Wconversion -Werror
 
-EXE = tp1.out
+EXE = tp1
 
 OBJS = $(OBJ)/main.o $(OBJ)/graph.o $(OBJ)/solution.o
 

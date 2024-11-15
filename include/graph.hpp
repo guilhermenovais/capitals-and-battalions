@@ -126,9 +126,22 @@ private:
    * @param startVertex Vértice de início (o batalhão).
    * @return Um vetor de pares `{from, to}` representando o caminho percorrido.
    */
-  std::vector<std::pair<std::string, std::string>>
-  findPatrolInSCC(const std::vector<std::string> &scc,
-                  const std::string &startVertex);
+  std::vector<std::string> findPatrolInSCC(const std::vector<std::string> &scc,
+                                           const std::string &startVertex);
+
+  /**
+   * @brief Função que encontra o menor caminho entre dois vértices em um grafo
+   * não ponderado. Utiliza busca em largura (BFS) para encontrar o menor
+   * caminho em termos de número de arestas.
+   * @param from Vértice de origem.
+   * @param to Vértice de destino.
+   * @param adjList Lista de adjacências que representa o grafo.
+   * @return Um vetor que contém os vértices no menor caminho de `from` para
+   * `to`. Se não houver caminho, o vetor será vazio.
+   */
+  std::vector<std::string> getShortestPathBetween(
+      std::string from, std::string to,
+      std::unordered_map<std::string, std::vector<std::string>> adjList);
 
   std::string
       capital; ///< Nome da capital do grafo, definida na função `findCapital`.

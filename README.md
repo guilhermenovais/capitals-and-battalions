@@ -121,7 +121,7 @@ Khudealine Thonet Khudealine
    - **Secondary battalions** are assigned to each SCC (if the SCC does not contain the capital), choosing a vertex that minimizes the distance to the capital.
 
 4. **Patrol Routes**:
-   - A **DFS (Depth-First Search)**-based patrol planner is implemented to traverse each SCC, ensuring that all roads (edges) are crossed at least once. In case the SCC forms cycles, vertices and edges may be visited multiple times.
+   - Unexplored edges are kept in an adapted local adjacency list, ensuring that all roads (edges) are crossed at least once. Vertices and edges may be visited multiple times in a patrol.
 
 ---
 

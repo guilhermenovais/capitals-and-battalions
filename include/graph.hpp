@@ -143,8 +143,19 @@ private:
       std::string from, std::string to,
       std::unordered_map<std::string, std::vector<std::string>> adjList);
 
-  std::string
-      capital; ///< Nome da capital do grafo, definida na função `findCapital`.
+  /**
+   * @brief Função para remover um vértice de uma lista
+   */
+  void removeVertexFromList(std::vector<std::string> &list, std::string vertex);
+
+  /**
+   * @brief Função para verificar se um vértice está em uma lista
+   */
+  bool checkIfListContainsVertex(const std::vector<std::string> &list,
+                                 std::string vertex);
+
+  std::string capital; ///< Nome da capital do grafo, definida na função
+                       ///< `findCapital`.
   std::unordered_map<std::string, std::vector<std::string>>
       battalionsToScss; ///< Mapeia os batalhões com seus respectivos SCCs.
 };

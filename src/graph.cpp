@@ -6,27 +6,6 @@
 
 Graph::Graph() : INT_MAX(std::numeric_limits<int>::max()) {}
 
-void removeElement(std::vector<std::string> &vec, std::string value) {
-  size_t writeIndex = 0;
-
-  for (size_t readIndex = 0; readIndex < vec.size(); ++readIndex) {
-    if (vec[readIndex] != value) {
-      vec[writeIndex++] = vec[readIndex];
-    }
-  }
-
-  vec.resize(writeIndex);
-}
-
-bool containsValue(const std::vector<std::string> &vec, std::string value) {
-  for (size_t i = 0; i < vec.size(); ++i) {
-    if (vec[i] == value) {
-      return true;
-    }
-  }
-  return false;
-}
-
 void Graph::addVertex(const std::string &name) {
   if (adjList.find(name) == adjList.end()) {
     adjList[name] = std::vector<std::string>();
@@ -295,8 +274,10 @@ Graph::findPatrolInSCC(const std::vector<std::string> &scc,
         path.push_back(sourceVertex);
         if (i < sizePathToVertex - 1) {
           std::string destVertex = pathToVertex[i + 1];
-          if (containsValue(unvisitedEdgesByVertex[sourceVertex], destVertex)) {
-            removeElement(unvisitedEdgesByVertex[sourceVertex], destVertex);
+          if (checkIfListContainsVertex(unvisitedEdgesByVertex[sourceVertex],
+                                        destVertex)) {
+            removeVertexFromList(unvisitedEdgesByVertex[sourceVertex],
+                                 destVertex);
             numUnvisitedEdges--;
           }
         }
@@ -356,4 +337,27 @@ std::vector<std::string> Graph::getShortestPathBetween(
   std::reverse(path.begin(), path.end());
 
   return path;
+}
+
+void Graph::removeVertexFromList(std::vector<std::string> &list,
+                                 std::string vertex) {
+  size_t writeIndex = 0;
+
+  for (size_t readIndex = 0; readIndex < list.size(); ++readIndex) {
+    if (list[readIndex] != vertex) {
+      list[writeIndex++] = list[readIndex];
+    }
+  }
+
+  list.resize(writeIndex);
+}
+
+bool Graph::checkIfListContainsVertex(const std::vector<std::string> &list,
+                                      std::string vertex) {
+  for (size_t i = 0; i < list.size(); ++i) {
+    if (list[i] == vertex) {
+      return true;
+    }
+  }
+  return false;
 }

@@ -1,5 +1,4 @@
 #include "../include/graph.hpp"
-#include <algorithm>
 #include <limits>
 #include <queue>
 #include <vector>
@@ -334,7 +333,11 @@ std::vector<std::string> Graph::getShortestPathBetween(
     path.push_back(at);
   }
 
-  std::reverse(path.begin(), path.end());
+  // Inverte o caminho
+  int n = int(path.size());
+  for (int i = 0; i < n / 2; ++i) {
+    std::swap(path[i], path[n - i - 1]);
+  }
 
   return path;
 }
